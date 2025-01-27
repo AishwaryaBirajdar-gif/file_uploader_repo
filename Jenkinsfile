@@ -2,7 +2,7 @@
 pipeline {
     agent any
     environment {
-        DOCKER_IMAGE = 'your-dockerhub-username/file-uploader'  // Change this to your Docker Hub username and repo
+        DOCKER_IMAGE = 'aishwarya2306/file-uploader'  // Change this to your Docker Hub username and repo
         DOCKER_HUB_CREDENTIALS = credentials('docker-hub')      // Jenkins credentials ID for Docker Hub
     }
     stages {
