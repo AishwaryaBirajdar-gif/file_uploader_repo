@@ -1,4 +1,3 @@
-
 pipeline {
     agent any
     environment {
@@ -12,8 +11,6 @@ pipeline {
                 git branch: 'main', url: 'https://github.com/AishwaryaBirajdar-gif/file_uploader_repo.git'
             }
         }
-    }
-
         stage('Build Docker Image') {
             steps {
                 // Build the Docker image
