@@ -5,13 +5,15 @@ pipeline {
         DOCKER_IMAGE = 'aishwarya2306/file-uploader'  // Change this to your Docker Hub username and repo
         DOCKER_HUB_CREDENTIALS = credentials('docker-hub')      // Jenkins credentials ID for Docker Hub
     }
+  
     stages {
         stage('Clone Repository') {
             steps {
-                // Cloning the repository from GitHub
-                git 'https://github.com/AishwaryaBirajdar-gif/file_uploader_repo.git'  // Change this to your repo URL
+                git branch: 'main', url: 'https://github.com/AishwaryaBirajdar-gif/file_uploader_repo.git'
             }
         }
+    }
+
         stage('Build Docker Image') {
             steps {
                 // Build the Docker image
