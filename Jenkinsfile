@@ -1,42 +1,55 @@
 pipeline {
     agent any
+    
     environment {
-        DOCKER_IMAGE = 'aishwarya2306/file-uploader'  // Change this to your Docker Hub username and repo
-        DOCKER_HUB_CREDENTIALS = credentials('docker-hub')      // Jenkins credentials ID for Docker Hub
+        NODEJS_HOME = tool name: 'NodeJS', type: 'NodeJSInstallation'
     }
-  
+
     stages {
-        stage('Clone Repository') {
+        stage('Checkout') {
             steps {
-                git branch: 'main', url: 'https://github.com/AishwaryaBirajdar-gif/file_uploader_repo.git'
+                // Checkout the code from GitHub repository
+                git 'https://github.com/AishwaryaBirajdar-gif/file_uploader_repo.git'
             }
         }
-        stage('Build Docker Image') {
+
+        stage('Install Dependencies') {
             steps {
-                // Build the Docker image
                 script {
-                    docker.build(DOCKER_IMAGE)
+                    // Use NodeJS to install dependencies
+                    sh 'npm install'
                 }
             }
         }
-        stage('Push to Docker Hub') {
+
+        stage('Run Tests') {
             steps {
-                // Push the Docker image to Docker Hub
                 script {
-                    docker.withRegistry('https://registry.hub.docker.com', DOCKER_HUB_CREDENTIALS) {
-                        docker.image(DOCKER_IMAGE).push()
-                    }
+                    // Run tests if you have any (optional)
+                    sh 'npm test' // If you have test scripts defined in package.json
                 }
             }
         }
-        stage('Deploy to Kubernetes') {
+
+        stage('Build and Deploy') {
             steps {
-                // Deploy the application to Kubernetes
                 script {
-                    sh 'kubectl apply -f kubernetes/deployment.yaml'
-                    sh 'kubectl apply -f kubernetes/service.yaml'
+                    // Add any build commands or deployment steps
+                    echo 'Build and deploy steps go here.'
                 }
             }
+        }
+    }
+
+    post {
+        always {
+            echo 'Pipeline has finished.'
+        }
+        success {
+            echo 'Pipeline completed successfully.'
+        }
+        failure {
+            echo 'Pipeline failed.'
         }
     }
 }
